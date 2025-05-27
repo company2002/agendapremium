@@ -310,6 +310,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            position: relative;
         }
 
         .quick-stats {
@@ -485,7 +486,7 @@
 
         .event-card {
             background: var(--surface);
-            border: 1px solid var(--border);
+            border: 2px solid transparent;
             border-radius: var(--radius);
             padding: 1.5rem;
             transition: var(--transition);
@@ -501,6 +502,25 @@
 
         .event-card.due-soon {
             border-left: 4px solid var(--warning);
+        }
+
+        .event-card.overdue {
+            border-left: 4px solid #ff0000;
+        }
+
+        .event-card.priority-high {
+            border-color: #ff4444;
+            background: linear-gradient(to right, rgba(255, 68, 68, 0.1), transparent);
+        }
+
+        .event-card.priority-medium {
+            border-color: #ffbb33;
+            background: linear-gradient(to right, rgba(255, 187, 51, 0.1), transparent);
+        }
+
+        .event-card.priority-low {
+            border-color: #00C851;
+            background: linear-gradient(to right, rgba(0, 200, 81, 0.1), transparent);
         }
 
         .event-header {
@@ -1074,6 +1094,188 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--text-secondary);
         }
+
+        /* Estilos atualizados para o chat */
+.sidebar-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+}
+
+.btn-clear-chat {
+    position: absolute;
+    right: 0;
+    padding: 0.25rem 0.5rem;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+}
+
+.btn-clear-chat:hover {
+    color: var(--danger);
+    transform: scale(1.1);
+}
+
+.chat-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.chat-container:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.chat-messages {
+    padding: 1.25rem;
+    gap: 1.25rem;
+}
+
+.chat-message {
+    opacity: 0;
+    animation: fadeIn 0.3s ease forwards;
+    max-width: 85%;
+}
+
+.chat-message-content {
+    padding: 1rem 1.25rem;
+    line-height: 1.6;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.chat-message.user .chat-message-content {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+}
+
+.chat-message.ai .chat-message-content {
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+.chat-message.ai .chat-message-content:hover,
+.chat-message.user .chat-message-content:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.chat-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--primary);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.chat-avatar:hover {
+    transform: rotate(360deg);
+}
+
+.chat-input-container {
+    padding: 1.25rem;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-radius: 0 0 12px 12px;
+}
+
+.chat-input-container .form-control {
+    border-radius: 20px;
+    padding: 0.75rem 1.25rem;
+    transition: all 0.3s ease;
+    border: 1px solid var(--border);
+}
+
+.chat-input-container .form-control:focus {
+    box-shadow: 0 0 0 2px var(--primary-light);
+    transform: translateY(-1px);
+}
+
+.chat-input-container .btn {
+    border-radius: 20px;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.chat-input-container .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+:root {
+    --primary-dark: #4c6ef5;
+    --primary-light: rgba(102, 126, 234, 0.2);
+}
+
+/* Alerta de Evento Próximo */
+.upcoming-alert {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #ff0000;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    z-index: 9999;
+    display: none;
+    width: auto;
+    min-width: 180px;
+    max-width: 250px;
+    animation: blink 0.5s ease-in-out infinite;
+}
+
+.upcoming-alert.show {
+    display: flex;
+    align-items: center;
+}
+
+.upcoming-alert-title {
+    font-size: 0.85rem;
+    margin-right: 24px;
+}
+
+.upcoming-alert-close {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 4px;
+    font-size: 0.8rem;
+    line-height: 1;
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+        background: #ff0000;
+    }
+    50% {
+        opacity: 0.7;
+        background: #cc0000;
+    }
+}
     </style>
 </head>
 <body>
@@ -1211,6 +1413,9 @@
                     <h3 class="sidebar-title">
                         <i class="fas fa-robot"></i>
                         Assistente IA
+                        <button class="btn btn-sm btn-clear-chat" onclick="clearChat()" title="Limpar conversa">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     </h3>
                     <div class="chat-container">
                         <div id="chatMessages" class="chat-messages"></div>
@@ -1519,13 +1724,29 @@ function addChatMessage(message, type) {
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-// Adicionar listener para Enter no input do chat
-document.getElementById('userQuestion').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        askAI();
-    }
-});
+// Função para limpar o chat
+function clearChat() {
+    const chatMessages = document.getElementById('chatMessages');
+    chatMessages.innerHTML = '';
+}
+
+// Atualizando a função addChatMessage para incluir animação
+function addChatMessage(message, type) {
+    const chatMessages = document.getElementById('chatMessages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `chat-message ${type}`;
+    
+    messageDiv.innerHTML = `
+        <div class="chat-avatar">
+            <i class="fas ${type === 'user' ? 'fa-user' : 'fa-robot'}"></i>
+        </div>
+        <div class="chat-message-content">${message}</div>
+    `;
+    
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
         // Global State Management
         class EventManager {
             constructor() {
@@ -1946,6 +2167,30 @@ document.getElementById('userQuestion').addEventListener('keypress', function(e)
                         </div>
                     </div>
                 `;
+            }
+
+            renderCalendarEvent(event) {
+                const eventDiv = document.createElement('div');
+                eventDiv.className = `calendar-event priority-${event.priority}`;
+                eventDiv.textContent = event.title;
+                eventDiv.title = `Data: ${this.formatDate(event.date)}\nHora: ${event.time}\nPrioridade: ${this.getPriorityText(event.priority)}`;
+                
+                // Adiciona cor de fundo com base na prioridade
+                switch (event.priority) {
+                    case 'high':
+                        eventDiv.style.backgroundColor = 'rgba(255, 68, 68, 0.7)';
+                        break;
+                    case 'medium':
+                        eventDiv.style.backgroundColor = 'rgba(255, 187, 51, 0.7)';
+                        break;
+                    case 'low':
+                        eventDiv.style.backgroundColor = 'rgba(72, 187, 120, 0.7)';
+                        break;
+                    default:
+                        eventDiv.style.backgroundColor = 'rgba(0, 123, 255, 0.7)';
+                }
+                
+                return eventDiv;
             }
 
             // Calendar Methods
@@ -2461,6 +2706,96 @@ document.getElementById('userQuestion').addEventListener('keypress', function(e)
                 eventManager.saveQuickNotes();
             });
         });
+
+        // Sistema de Alerta de Eventos
+        let activeAlert = null;
+        let alertInterval = null;
+
+        function checkUpcomingEvents() {
+            const now = new Date();
+            const oneHourFromNow = new Date(now.getTime() + 60 * 60 * 1000);
+
+            // Filtrar eventos que acontecerão na próxima hora
+            const upcomingEvents = eventManager.events.filter(event => {
+                if (event.status === 'completed') return false;
+
+                const eventDate = new Date(event.date + ' ' + (event.time || '00:00'));
+                return eventDate > now && eventDate <= oneHourFromNow;
+            });
+
+            // Se encontrou eventos próximos e não há alerta ativo
+            if (upcomingEvents.length > 0 && !activeAlert) {
+                const nextEvent = upcomingEvents[0];
+                showEventAlert(nextEvent);
+            }
+        }
+
+        function showEventAlert(event) {
+            const alert = document.getElementById('upcomingAlert');
+            const message = document.getElementById('upcomingAlertMessage');
+            
+            // Formatar a mensagem
+            const eventTime = event.time || '00:00';
+            message.innerHTML = `
+                <strong>${event.title}</strong><br>
+                Data: ${formatDate(event.date)}<br>
+                Hora: ${eventTime}<br>
+                Prioridade: ${formatPriority(event.priority)}
+            `;
+
+            alert.classList.add('show');
+            activeAlert = event.id;
+
+            // Tocar um som de alerta (opcional)
+            playAlertSound();
+        }
+
+        function stopEventAlert() {
+            const alert = document.getElementById('upcomingAlert');
+            alert.classList.remove('show');
+            activeAlert = null;
+            
+            // Parar o som (se estiver tocando)
+            stopAlertSound();
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('pt-BR');
+        }
+
+        function formatPriority(priority) {
+            const priorities = {
+                high: 'Alta',
+                medium: 'Média',
+                low: 'Baixa'
+            };
+            return priorities[priority] || priority;
+        }
+
+        function playAlertSound() {
+            // Você pode adicionar um som de alerta aqui se desejar
+            // const audio = new Audio('caminho/para/som.mp3');
+            // audio.play();
+        }
+
+        function stopAlertSound() {
+            // Parar o som se necessário
+        }
+
+        // Iniciar verificação de eventos a cada minuto
+        setInterval(checkUpcomingEvents, 60000);
+        // Verificar imediatamente ao carregar a página
+        checkUpcomingEvents();
     </script>
+
+    <!-- Alerta de Evento Próximo -->
+    <div id="upcomingAlert" class="upcoming-alert">
+        <button class="upcoming-alert-close" onclick="stopEventAlert()">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="upcoming-alert-title">Evento Próximo!</div>
+        <div id="upcomingAlertMessage"></div>
+    </div>
 </body>
 </html>

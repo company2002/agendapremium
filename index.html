@@ -1,0 +1,2466 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda Profissional - Gestor Premium</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a67d8;
+            --secondary: #764ba2;
+            --success: #48bb78;
+            --warning: #ed8936;
+            --danger: #f56565;
+            --info: #4299e1;
+            --light: #f7fafc;
+            --dark: #2d3748;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text-primary: #2d3748;
+            --text-secondary: #718096;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --background: #1a202c;
+            --surface: #2d3748;
+            --text-primary: #f7fafc;
+            --text-secondary: #a0aec0;
+            --border: #4a5568;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: var(--transition);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header Styles */
+        .header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Header Actions Layout */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            padding: 0.75rem;
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        /* Header Actions Styles */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 0.5rem;
+        }
+
+        /* WhatsApp Input Container */
+        .whatsapp-global {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 200px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0.75rem 1rem;
+            transition: var(--transition);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .whatsapp-global:focus-within {
+            border-color: var(--success);
+            box-shadow: 0 0 0 3px rgba(72, 187, 120, 0.2);
+        }
+
+        .whatsapp-global i {
+            color: #25d366;
+            font-size: 1.2rem;
+        }
+
+        .whatsapp-global input {
+            border: none;
+            background: transparent;
+            color: var(--text-primary);
+            width: 100%;
+            font-size: 0.9rem;
+            outline: none;
+            padding: 0;
+        }
+
+        .whatsapp-global input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .whatsapp-global:hover {
+            border-color: var(--success);
+            background: var(--light);
+        }
+
+        /* Botões principais */
+        .header-btn {
+            min-width: 140px;
+            height: 42px;
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            padding: 0.75rem 1.5rem;
+        }
+
+        .header-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }        /* Botão Novo Evento */
+        .btn-new-event {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            min-width: 120px;
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-left: 1rem;
+        }
+
+        .btn-new-event:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Botão Enviar Tudo */
+        .btn-send-all {
+            background: var(--success);
+            color: white;
+            border: none;
+        }
+
+        .btn-send-all:hover {
+            background: #3da066;
+        }
+
+        /* Botão Por Prioridade */
+        .btn-priority {
+            background: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        .btn-priority:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Dropdown de Exportação */
+        .export-dropdown {
+            position: relative;
+        }
+
+        .export-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            padding: 0.5rem;
+            min-width: 180px;
+            display: none;
+            z-index: 1000;
+        }
+
+        .export-menu.show {
+            display: block;
+        }
+
+        .export-menu button {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            color: var(--text-primary);
+            border: none;
+            background: transparent;
+            font-size: 0.9rem;
+            text-align: left;
+            transition: var(--transition);
+            border-radius: var(--radius);
+            margin: 0.25rem 0;
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+        }
+
+        .export-menu button:hover {
+            background: var(--light);
+            color: var(--primary);
+        }
+
+        .export-menu button i {
+            width: 20px;
+            text-align: center;
+            margin-right: 0.5rem;
+        }
+
+        /* Estilos específicos para os ícones de exportação */
+        .export-menu button i.fa-file-pdf {
+            color: #dc3545;
+        }
+
+        .export-menu button i.fa-file-csv {
+            color: #28a745;
+        }
+
+        .export-menu button i.fa-file-code {
+            color: #007bff;
+        }
+
+        /* Main Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
+            padding: 2rem 0;
+            min-height: calc(100vh - 100px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+        }
+
+        .sidebar-section {
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem;
+            border-radius: var(--radius);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+
+        .filters {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            min-width: 100%;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            width: 100%;
+        }
+
+        .filter-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .filter-group .form-control {
+            width: 100%;
+            min-height: 40px;
+        }
+
+        .form-control {
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--surface);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .content-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* Header Controls */
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .view-tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--light);
+            padding: 0.5rem;
+            border-radius: var(--radius);
+            margin-right: 1rem;
+        }
+
+        /* View Tabs Buttons */
+        .view-tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--light);
+            padding: 0.5rem;
+            border-radius: var(--radius);
+            margin-right: 1rem;
+        }
+
+        .tab-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            border: none;
+            background: transparent;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            min-width: 120px;
+            justify-content: center;
+        }
+
+        .tab-btn i {
+            font-size: 1rem;
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.8);
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            background: var(--surface);
+            color: var(--primary);
+            font-weight: 600;
+            box-shadow: var(--shadow);
+        }
+
+        /* Events Grid */
+        .events-container {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .events-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+
+        .events-grid {
+            display: grid;
+            gap: 1rem;
+            padding: 1.5rem;
+        }
+
+        .event-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            transition: var(--transition);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .event-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .event-card.due-soon {
+            border-left: 4px solid var(--warning);
+        }
+
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .event-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .event-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        .event-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1rem 0;
+            font-size: 0.875rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .priority-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .priority-high {
+            background: rgba(245, 101, 101, 0.1);
+            color: var(--danger);
+        }
+
+        .priority-medium {
+            background: rgba(237, 137, 54, 0.1);
+            color: var(--warning);
+        }
+
+        .priority-low {
+            background: rgba(72, 187, 120, 0.1);
+            color: var(--success);
+        }
+
+        .event-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        /* Botões de Eventos */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--light);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #3da066;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #e53e3e;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #dd6b20;
+        }
+
+        .btn-info {
+            background: var(--info);
+            color: white;
+        }
+
+        .btn-info:hover {
+            background: #3182ce;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.75rem;
+        }
+
+        /* Calendar View */
+        .calendar-container {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            display: none;
+        }
+
+        .calendar-container.active {
+            display: block;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .calendar-nav {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .calendar-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 1rem;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .calendar-day-header {
+            background: var(--light);
+            padding: 1rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .calendar-day {
+            background: var(--surface);
+            min-height: 120px;
+            padding: 0.5rem;
+            position: relative;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .calendar-day:hover {
+            background: var(--light);
+        }
+
+        .calendar-day.other-month {
+            background: var(--light);
+            color: var(--text-secondary);
+            opacity: 0.5;
+        }
+
+        .calendar-day.today {
+            background: rgba(102, 126, 234, 0.1);
+            border: 2px solid var(--primary);
+        }
+
+        .calendar-day-number {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .calendar-events {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .calendar-event {
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            transform: scale(0.9);
+            transition: var(--transition);
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--danger);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem 1.5rem;
+            box-shadow: var(--shadow-lg);
+            z-index: 1100;
+            transform: translateX(400px);
+            transition: var(--transition);
+            min-width: 300px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .notification.error {
+            border-left: 4px solid var(--danger);
+        }
+
+        .notification.warning {
+            border-left: 4px solid var(--warning);
+        }
+
+        /* Chat Container Styles */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 300px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background: var(--background);
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 0.5rem;
+            max-width: 80%;
+        }
+
+        .chat-message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .chat-message-content {
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .chat-message.user .chat-message-content {
+            background: var(--primary);
+            color: white;
+            border-radius: var(--radius) var(--radius) 0 var(--radius);
+        }
+
+        .chat-message.ai .chat-message-content {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius) var(--radius) var(--radius) 0;
+        }
+
+        .chat-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
+        }
+
+        .chat-avatar i {
+            font-size: 1rem;
+            color: var(--primary);
+        }
+
+        .chat-message.user .chat-avatar i {
+            color: var(--text-primary);
+        }
+
+        .chat-input-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+        }
+
+        .chat-input-container .form-control {
+            width: 100%;
+            min-height: 40px;
+        }
+
+        .chat-input-container .btn {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            justify-content: center;
+        }
+
+        .chat-loading {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .chat-loading .loading {
+            border-color: var(--text-secondary);
+            border-top-color: var(--primary);
+        }
+
+        .chat-error {
+            color: var(--danger);
+            font-size: 0.875rem;
+            padding: 0.5rem;
+            background: rgba(245, 101, 101, 0.1);
+            border-radius: var(--radius);
+            margin: 0.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: static;
+                order: 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .header-actions {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+            
+            .whatsapp-global {
+                width: 100%;
+                order: -1;
+            }
+            
+            .content-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .calendar-grid {
+                font-size: 0.875rem;
+            }
+            
+            .calendar-day {
+                min-height: 80px;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Drag and Drop */
+        .dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+        }
+
+        .drop-zone {
+            border: 2px dashed var(--primary);
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Agenda Premium</span>
+                </div>
+                  <div class="header-actions">
+                    <div class="whatsapp-global">
+                        <i class="fab fa-whatsapp" style="color: #25d366;"></i>
+                        <input type="tel" id="globalWhatsApp" placeholder="(11) 99999-9999" value="">
+                    </div>
+                    
+                    <button class="header-btn btn-send-all" onclick="eventManager.sendAllEvents()">
+                        <i class="fas fa-paper-plane"></i>
+                        Enviar Tudo
+                    </button>
+                    
+                    <button class="header-btn btn-priority" onclick="eventManager.sendByPriority()">
+                        <i class="fas fa-sort-amount-down"></i>
+                        Por Prioridade
+                    </button>
+                    
+                    <div class="export-dropdown">
+                        <button class="header-btn export-btn" onclick="toggleExportMenu()">
+                            <i class="fas fa-download"></i>
+                            Exportar
+                        </button>
+                        <div class="export-menu" id="exportMenu">
+                            <button onclick="eventManager.exportData('pdf')">
+                                <i class="fas fa-file-pdf"></i> PDF
+                            </button>
+                            <button onclick="eventManager.exportData('csv')">
+                                <i class="fas fa-file-csv"></i> CSV
+                            </button>
+                            <button onclick="eventManager.exportData('json')">
+                                <i class="fas fa-file-code"></i> JSON
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button class="theme-toggle" onclick="eventManager.toggleTheme()">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="container">
+        <div class="main-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">
+                        <i class="fas fa-chart-bar"></i>
+                        Resumo Geral
+                    </h3>
+                    <div class="quick-stats">
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalEvents">0</div>
+                            <div class="stat-label">Eventos</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="dueEvents">0</div>
+                            <div class="stat-label">A Vencer</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="pendingEvents">0</div>
+                            <div class="stat-label">Pendentes</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="completedEvents">0</div>
+                            <div class="stat-label">Concluídos</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="overdueEvents">0</div>
+                            <div class="stat-label">Atrasados</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">
+                        <i class="fas fa-filter"></i>
+                        Filtros
+                    </h3>
+                    <div class="filters">
+                        <div class="filter-group">
+                            <label class="filter-label">Buscar</label>
+                            <input type="text" class="form-control" id="searchFilter" placeholder="Buscar eventos...">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">Prioridade</label>
+                            <select class="form-control" id="priorityFilter">
+                                <option value="">Todas</option>
+                                <option value="high">Alta</option>
+                                <option value="medium">Média</option>
+                                <option value="low">Baixa</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">Categoria</label>
+                            <select class="form-control" id="categoryFilter">
+                                <option value="">Todas</option>
+                                <option value="meeting">Reunião</option>
+                                <option value="delivery">Entrega</option>
+                                <option value="task">Tarefa</option>
+                                <option value="reminder">Lembrete</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">Status</label>
+                            <select class="form-control" id="statusFilter">
+                                <option value="">Todos</option>
+                                <option value="pending">Pendente</option>
+                                <option value="completed">Concluído</option>
+                                <option value="overdue">Atrasado</option>
+                            </select>
+                        </div>
+                          <button class="btn btn-secondary" onclick="eventManager.clearFilters()">
+                            <i class="fas fa-times"></i>
+                            Limpar Filtros
+                        </button>
+                    </div>
+                </div>                <div class="sidebar-section">
+                    <h3 class="sidebar-title">
+                        <i class="fas fa-robot"></i>
+                        Assistente IA
+                    </h3>
+                    <div class="chat-container">
+                        <div id="chatMessages" class="chat-messages"></div>
+                        <div class="chat-input-container">
+                            <input type="text" class="form-control" id="userQuestion" placeholder="Digite sua pergunta aqui...">
+                            <button class="btn btn-primary btn-sm" onclick="askAI()" id="askButton">
+                                <i class="fas fa-paper-plane"></i>
+                                Enviar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <div class="content-header">
+                    <h1 class="content-title">Gerenciamento de Eventos</h1>
+                    <div class="header-controls">
+                        <div class="view-tabs">                            <button class="tab-btn active" data-view="list" onclick="eventManager.switchView('list')">
+                                <i class="fas fa-list"></i>
+                                Lista
+                            </button>
+                            <button class="tab-btn" data-view="calendar" onclick="eventManager.switchView('calendar')">
+                                <i class="fas fa-calendar"></i>
+                                Calendário
+                            </button>
+                        </div>                        <button class="header-btn btn-new-event" onclick="eventManager.openEventModal()">
+                            <i class="fas fa-plus"></i>
+                            Novo Evento
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Events List View -->
+                <div class="events-container" id="listView">
+                    <div class="events-header">
+                        <div class="sort-controls">
+                            <label>Ordenar por:</label>                            <select class="form-control" id="sortBy" onchange="eventManager.sortEvents()">
+                                <option value="date">Data</option>
+                                <option value="priority">Prioridade</option>
+                                <option value="title">Título</option>
+                                <option value="category">Categoria</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="events-grid" id="eventsGrid">
+                        <!-- Events will be dynamically loaded here -->
+                    </div>
+                </div>
+
+                <!-- Calendar View -->
+                <div class="calendar-container" id="calendarView">
+                    <div class="calendar-header">
+                        <div class="calendar-nav">                            <button class="btn btn-secondary" onclick="eventManager.previousMonth()">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <h2 class="calendar-title" id="calendarTitle">Janeiro 2024</h2>
+                            <button class="btn btn-secondary" onclick="eventManager.nextMonth()">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                        <button class="btn btn-primary" onclick="eventManager.goToToday()">
+                            <i class="fas fa-calendar-day"></i>
+                            Hoje
+                        </button>
+                    </div>
+                    
+                    <div class="calendar-grid" id="calendarGrid">
+                        <!-- Calendar will be dynamically generated -->
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Event Modal -->
+    <div class="modal" id="eventModal">
+        <div class="modal-content">
+            <div class="modal-header">                <h3 class="modal-title" id="modalTitle">Novo Evento</h3>
+                <button class="modal-close" onclick="eventManager.closeEventModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="eventForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Título *</label>
+                        <input type="text" class="form-control" id="eventTitle" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Categoria</label>
+                        <select class="form-control" id="eventCategory">
+                            <option value="meeting">Reunião</option>
+                            <option value="delivery">Entrega</option>
+                            <option value="task">Tarefa</option>
+                            <option value="reminder">Lembrete</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Data *</label>
+                        <input type="date" class="form-control" id="eventDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Hora</label>
+                        <input type="time" class="form-control" id="eventTime">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Prioridade</label>
+                        <select class="form-control" id="eventPriority">
+                            <option value="low">Baixa</option>
+                            <option value="medium">Média</option>
+                            <option value="high">Alta</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">WhatsApp Responsável</label>
+                        <input type="tel" class="form-control" id="eventWhatsApp" placeholder="(11) 99999-9999">
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label class="form-label">Descrição</label>
+                        <textarea class="form-control textarea" id="eventDescription" placeholder="Descreva os detalhes do evento..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Localização</label>
+                        <input type="text" class="form-control" id="eventLocation" placeholder="Endereço ou local">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Link/URL</label>
+                        <input type="url" class="form-control" id="eventLink" placeholder="https://...">
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label class="form-label">
+                            <input type="checkbox" id="eventPrivate" style="margin-right: 0.5rem;">
+                            Evento Privado (não será enviado para funcionários)
+                        </label>
+                    </div>
+                </div>
+                  <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="eventManager.closeEventModal()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Salvar Evento
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirmModal">
+        <div class="modal-content" style="max-width: 400px;">            <div class="modal-header">
+                <h3 class="modal-title">Confirmação</h3>
+                <button class="modal-close" onclick="eventManager.closeConfirmModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <p id="confirmMessage">Tem certeza que deseja realizar esta ação?</p>
+            </div>
+              <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="eventManager.closeConfirmModal()">
+                    Cancelar
+                </button>
+                <button class="btn btn-danger" id="confirmAction">
+                    Confirmar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notificationContainer"></div>
+
+    <!-- Add jsPDF library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script>
+        // Função para controlar o menu de exportação
+        function toggleExportMenu() {
+            const menu = document.getElementById('exportMenu');
+            menu.classList.toggle('show');
+
+            // Fechar o menu quando clicar fora dele
+            document.addEventListener('click', function closeMenu(e) {
+                if (!e.target.closest('.export-dropdown')) {
+                    menu.classList.remove('show');
+                    document.removeEventListener('click', closeMenu);
+                }
+            });
+        } // <-- Added missing closing curly brace here
+
+        // Chat AI Integration
+    async function askAI() {
+        const input = document.getElementById('userQuestion');
+        const chatMessages = document.getElementById('chatMessages');
+        const question = input.value.trim();
+        const API_KEY = 'AIzaSyA9mUo52wQsBX-PLcVugtvsLfM0nHe6ppQ';
+        
+        if (!question) return;
+
+        // Disable input and button while processing
+        input.disabled = true;
+        document.getElementById('askButton').disabled = true;
+
+        // Add user message
+        addChatMessage(question, 'user');
+
+        // Add loading indicator
+        const loadingDiv = document.createElement('div');
+        loadingDiv.className = 'chat-loading';
+        loadingDiv.innerHTML = `
+        <div class="loading"></div>
+        <span>Pensando...</span>
+        `;
+        chatMessages.appendChild(loadingDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        try {
+            console.log('Enviando requisição para a API...');
+            const requestBody = {
+                contents: [{
+                    parts: [{
+                        text: question
+                    }]
+                }]
+            };
+
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            if (!response.ok) {
+                console.error('Erro na resposta da API:', response.status, response.statusText);
+                const errorData = await response.text();
+                console.error('Detalhes do erro:', errorData);
+                throw new Error(`Erro na API: ${response.status} - ${errorData}`);
+            }
+
+            const data = await response.json();
+            console.log('Resposta recebida:', data);
+
+            if (!data || !data.candidates || !data.candidates[0] || !data.candidates[0].content) {
+                throw new Error('Resposta inválida da API');
+            }
+
+            const answer = data.candidates[0].content.parts[0].text;
+            
+            // Remove loading indicator
+            loadingDiv.remove();
+
+            // Add AI response
+            addChatMessage(answer, 'ai');
+
+        } catch (error) {
+            console.error('Erro detalhado:', error);
+            
+            // Remove loading indicator
+            loadingDiv.remove();
+
+            // Show error message with more details
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'chat-error';
+            errorDiv.textContent = `Erro ao processar sua pergunta: ${error.message}. Por favor, tente novamente mais tarde.`;
+            chatMessages.appendChild(errorDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Re-enable input and button
+        input.disabled = false;
+        document.getElementById('askButton').disabled = false;
+        input.value = '';
+        input.focus();
+    }
+
+function addChatMessage(message, type) {
+    const chatMessages = document.getElementById('chatMessages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `chat-message ${type}`;
+    
+    messageDiv.innerHTML = `
+        <div class="chat-avatar">
+            <i class="fas ${type === 'user' ? 'fa-user' : 'fa-robot'}"></i>
+        </div>
+        <div class="chat-message-content">${message}</div>
+    `;
+    
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Adicionar listener para Enter no input do chat
+document.getElementById('userQuestion').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        askAI();
+    }
+});
+        // Global State Management
+        class EventManager {
+            constructor() {
+                this.events = JSON.parse(localStorage.getItem('events') || '[]');
+                this.currentView = 'list';
+                this.currentDate = new Date();
+                this.editingEvent = null;
+                this.filters = {
+                    search: '',
+                    priority: '',
+                    category: '',
+                    status: ''
+                };
+                this.init();
+
+                // Carregar tema salvo
+                const savedTheme = localStorage.getItem('theme') || 'light';
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                const themeIcon = document.querySelector('.theme-toggle i');
+                if (themeIcon) {
+                    themeIcon.className = `fas ${savedTheme === 'dark' ? 'fa-sun' : 'fa-moon'}`;
+                }
+            }
+
+            init() {
+                this.loadGlobalWhatsApp();
+                this.loadQuickNotes();
+                this.setupEventListeners();
+                this.renderEvents();
+                this.updateStats();
+                this.generateCalendar();
+                this.checkOverdueEvents();
+                
+                // Check for notifications every minute
+                setInterval(() => this.checkNotifications(), 60000);
+            }
+
+            setupEventListeners() {
+                // Form submission
+                document.getElementById('eventForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.saveEvent();
+                });
+
+                // Filter inputs
+                document.getElementById('searchFilter').addEventListener('input', (e) => {
+                    this.filters.search = e.target.value;
+                    this.applyFilters();
+                });
+
+                document.getElementById('priorityFilter').addEventListener('change', (e) => {
+                    this.filters.priority = e.target.value;
+                    this.applyFilters();
+                });
+
+                document.getElementById('categoryFilter').addEventListener('change', (e) => {
+                    this.filters.category = e.target.value;
+                    this.applyFilters();
+                });
+
+                document.getElementById('statusFilter').addEventListener('change', (e) => {
+                    this.filters.status = e.target.value;
+                    this.applyFilters();
+                });
+
+                // Global WhatsApp save
+                document.getElementById('globalWhatsApp').addEventListener('blur', () => {
+                    this.saveGlobalWhatsApp();
+                });
+
+                // Close modals on outside click
+                document.getElementById('eventModal').addEventListener('click', (e) => {
+                    if (e.target.id === 'confirmModal') this.closeConfirmModal();
+                });
+            }
+
+            // Event CRUD Operations
+            saveEvent() {
+                const formData = this.getFormData();
+                
+                if (!this.validateForm(formData)) {
+                    return;
+                }
+
+                if (this.editingEvent) {
+                    // Update existing event
+                    const index = this.events.findIndex(e => e.id === this.editingEvent.id);
+                    this.events[index] = { ...this.editingEvent, ...formData, updatedAt: new Date().toISOString() };
+                    this.showNotification('Evento atualizado com sucesso!', 'success');
+                } else {
+                    // Create new event
+                    const newEvent = {
+                        id: this.generateId(),
+                        ...formData,
+                        status: 'pending',
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString()
+                    };
+                    this.events.push(newEvent);
+                    this.showNotification('Evento criado com sucesso!', 'success');
+                }
+
+                this.saveToStorage();
+                this.renderEvents();
+                this.updateStats();
+                this.generateCalendar();
+                this.closeEventModal();
+            }
+
+            getFormData() {
+                return {
+                    title: document.getElementById('eventTitle').value.trim(),
+                    description: document.getElementById('eventDescription').value.trim(),
+                    date: document.getElementById('eventDate').value,
+                    time: document.getElementById('eventTime').value,
+                    priority: document.getElementById('eventPriority').value,
+                    category: document.getElementById('eventCategory').value,
+                    whatsapp: document.getElementById('eventWhatsApp').value.trim(),
+                    location: document.getElementById('eventLocation').value.trim(),
+                    link: document.getElementById('eventLink').value.trim(),
+                    private: document.getElementById('eventPrivate').checked
+                };
+            }
+
+            validateForm(data) {
+                if (!data.title) {
+                    this.showNotification('Título é obrigatório!', 'error');
+                    return false;
+                }
+                
+                if (!data.date) {
+                    this.showNotification('Data é obrigatória!', 'error');
+                    return false;
+                }
+
+                return true;
+            }
+
+            deleteEvent(id) {
+                this.showConfirmation(
+                    'Tem certeza que deseja excluir este evento?',
+                    () => {
+                        this.events = this.events.filter(e => e.id !== id);
+                        this.saveToStorage();
+                        this.renderEvents();
+                        this.updateStats();
+                        this.generateCalendar();
+                        this.showNotification('Evento excluído com sucesso!', 'success');
+                        this.closeConfirmModal();
+                    }
+                );
+            }
+
+            toggleEventStatus(id) {
+                const event = this.events.find(e => e.id === id);
+                if (event) {
+                    event.status = event.status === 'completed' ? 'pending' : 'completed';
+                    event.completedAt = event.status === 'completed' ? new Date().toISOString() : null;
+                    this.saveToStorage();
+                    this.renderEvents();
+                    this.updateStats();
+                    this.showNotification(
+                        event.status === 'completed' ? 'Evento marcado como concluído!' : 'Evento marcado como pendente!',
+                        'success'
+                    );
+                }
+            }
+
+            duplicateEvent(id) {
+                const event = this.events.find(e => e.id === id);
+                if (event) {
+                    const duplicated = {
+                        ...event,
+                        id: this.generateId(),
+                        title: `${event.title} (Cópia)`,
+                        status: 'pending',
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString(),
+                        completedAt: null
+                    };
+                    this.events.push(duplicated);
+                    this.saveToStorage();
+                    this.renderEvents();
+                    this.updateStats();
+                    this.showNotification('Evento duplicado com sucesso!', 'success');
+                }
+            }
+
+            // WhatsApp Integration
+            sendEventWhatsApp(id) {
+                const event = this.events.find(e => e.id === id);
+                if (!event) return;
+
+                const phone = event.whatsapp || document.getElementById('globalWhatsApp').value;
+                if (!phone) {
+                    this.showNotification('Número do WhatsApp não informado!', 'error');
+                    return;
+                }
+
+                const message = this.formatWhatsAppMessage(event);
+                const whatsappUrl = `https://wa.me/${this.cleanPhoneNumber(phone)}?text=${encodeURIComponent(message)}`;
+                
+                window.open(whatsappUrl, '_blank');
+                this.showNotification('Mensagem enviada para o WhatsApp!', 'success');
+                
+                // Log the send action
+                this.logAction('whatsapp_send', { eventId: id, phone, timestamp: new Date().toISOString() });
+            }
+
+            sendAllEvents() {
+                const globalPhone = document.getElementById('globalWhatsApp').value;
+                if (!globalPhone) {
+                    this.showNotification('Número global do WhatsApp não informado!', 'error');
+                    return;
+                }
+
+                const pendingEvents = this.events.filter(e => e.status === 'pending' && !e.private);
+                if (pendingEvents.length === 0) {
+                    this.showNotification('Não há eventos pendentes para enviar!', 'warning');
+                    return;
+                }
+
+                this.showConfirmation(
+                    `Deseja enviar ${pendingEvents.length} eventos para ${globalPhone}?`,
+                    () => {
+                        const message = this.formatBulkWhatsAppMessage(pendingEvents);
+                        const whatsappUrl = `https://wa.me/${this.cleanPhoneNumber(globalPhone)}?text=${encodeURIComponent(message)}`;
+                        
+                        window.open(whatsappUrl, '_blank');
+                        this.showNotification(`${pendingEvents.length} eventos enviados!`, 'success');
+                        this.closeConfirmModal();
+                    }
+                );
+            }
+
+            sendByPriority() {
+                const highPriorityEvents = this.events.filter(e => e.status === 'pending' && e.priority === 'high' && !e.private);
+                
+                if (highPriorityEvents.length === 0) {
+                    this.showNotification('Não há eventos de alta prioridade pendentes!', 'warning');
+                    return;
+                }
+
+                // Group events by phone number
+                const grouped = highPriorityEvents.reduce((acc, event) => {
+                    const phone = event.whatsapp || document.getElementById('globalWhatsApp').value;
+                    if (!acc[phone]) acc[phone] = [];
+                    acc[phone].push(event);
+                    return acc;
+                }, {});
+
+                Object.entries(grouped).forEach(([phone, events]) => {
+                    const message = this.formatBulkWhatsAppMessage(events);
+                    const whatsappUrl = `https://wa.me/${this.cleanPhoneNumber(phone)}?text=${encodeURIComponent(message)}`;
+                    window.open(whatsappUrl, '_blank');
+                });
+
+                this.showNotification(`Eventos de alta prioridade enviados para ${Object.keys(grouped).length} contatos!`, 'success');
+            }
+
+            formatWhatsAppMessage(event) {
+                let message = `🗓️ *${event.title}*\n\n`;
+                
+                if (event.description) {
+                    message += `📝 ${event.description}\n\n`;
+                }
+                
+                message += `📅 Data: ${this.formatDate(event.date)}\n`;
+                
+                if (event.time) {
+                    message += `⏰ Hora: ${event.time}\n`;
+                }
+                
+                message += `⚡ Prioridade: ${this.getPriorityText(event.priority)}\n`;
+                message += `📂 Categoria: ${this.getCategoryText(event.category)}\n`;
+                
+                if (event.location) {
+                    message += `📍 Local: ${event.location}\n`;
+                }
+                
+                if (event.link) {
+                    message += `🔗 Link: ${event.link}\n`;
+                }
+                
+                message += `\n📱 Enviado via Agenda Premium`;
+                
+                return message;
+            }
+
+            formatBulkWhatsAppMessage(events) {
+                let message = `📋 *AGENDA DE EVENTOS*\n\n`;
+                
+                events.forEach((event, index) => {
+                    message += `${index + 1}. *${event.title}*\n`;
+                    message += `   📅 ${this.formatDate(event.date)}`;
+                    if (event.time) message += ` às ${event.time}`;
+                    message += `\n   ⚡ ${this.getPriorityText(event.priority)}\n\n`;
+                });
+                
+                message += `📱 Total: ${events.length} eventos\n`;
+                message += `📱 Enviado via Agenda Premium`;
+                
+                return message;
+            }            cleanPhoneNumber(phone) {
+                // Remove todos os caracteres não numéricos
+                const cleaned = phone.replace(/\D/g, '');
+                // Se o número já começa com 55, retorna como está
+                if (cleaned.startsWith('55')) {
+                    return cleaned;
+                }
+                // Caso contrário, adiciona o código do Brasil (+55)
+                return '55' + cleaned;
+            }
+
+            // Rendering Methods
+            renderEvents() {
+                const container = document.getElementById('eventsGrid');
+                const filteredEvents = this.getFilteredEvents();
+                
+                if (filteredEvents.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 3rem; color: var(--text-secondary);">
+                            <i class="fas fa-calendar-times" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                            <p>Nenhum evento encontrado</p>
+                            <button class="btn btn-primary" onclick="eventManager.openEventModal()">
+                                <i class="fas fa-plus"></i>
+                                Criar Primeiro Evento
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = filteredEvents.map(event => this.renderEventCard(event)).join('');
+            }
+
+            renderEventCard(event) {
+                const isOverdue = this.isEventOverdue(event);
+                const isDueSoon = this.isEventDueSoon(event);
+                const priorityClass = `priority-${event.priority}`;
+                const statusIcon = event.status === 'completed' ? 'fa-check-circle' : 
+                                 isDueSoon ? 'fa-clock' :
+                                 isOverdue ? 'fa-exclamation-circle' : 'fa-hourglass-start';
+                const statusColor = event.status === 'completed' ? 'var(--success)' : 
+                                  isDueSoon ? 'var(--warning)' :
+                                  isOverdue ? 'var(--danger)' : 'var(--info)';
+                const statusText = event.status === 'completed' ? 'Concluído' :
+                                 isDueSoon ? 'A Vencer' :
+                                 isOverdue ? 'Atrasado' : 'Pendente';
+
+                return `
+                    <div class="event-card ${isOverdue ? 'overdue' : ''} ${isDueSoon ? 'due-soon' : ''}" data-id="${event.id}">
+                        <div class="event-header">
+                            <div>
+                                <h4 class="event-title">${event.title}</h4>
+                                ${event.private ? '<i class="fas fa-lock" style="color: var(--warning); margin-left: 0.5rem;" title="Evento Privado"></i>' : ''}
+                            </div>
+                            <div class="priority-badge ${priorityClass}">
+                                ${this.getPriorityText(event.priority)}
+                            </div>
+                        </div>
+                        
+                        ${event.description ? `<p class="event-description">${event.description}</p>` : ''}
+                        
+                        <div class="event-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-calendar"></i>
+                                <span>${this.formatDate(event.date)}</span>
+                            </div>
+                            
+                            ${event.time ? `
+                                <div class="meta-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>${event.time}</span>
+                                </div>
+                            ` : ''}
+                            
+                            <div class="meta-item">
+                                <i class="fas ${statusIcon}" style="color: ${statusColor};"></i>
+                                <span style="color: ${statusColor};">${statusText}</span>
+                            </div>
+                            
+                            <div class="meta-item">
+                                <i class="fas fa-tag"></i>
+                                <span>${this.getCategoryText(event.category)}</span>
+                            </div>
+                            
+                            ${event.location ? `
+                                <div class="meta-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>${event.location}</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                        
+                        <div class="event-actions">
+                            <button class="btn btn-sm btn-primary" onclick="eventManager.editEvent('${event.id}')" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            
+                            <button class="btn btn-sm ${event.status === 'completed' ? 'btn-warning' : 'btn-success'}" 
+                                    onclick="eventManager.toggleEventStatus('${event.id}')" 
+                                    title="${event.status === 'completed' ? 'Marcar como Pendente' : 'Marcar como Concluído'}">
+                                <i class="fas ${event.status === 'completed' ? 'fa-undo' : 'fa-check'}"></i>
+                            </button>
+                            
+                            <button class="btn btn-sm btn-info" onclick="eventManager.sendEventWhatsApp('${event.id}')" title="Enviar WhatsApp">
+                                <i class="fab fa-whatsapp"></i>
+                            </button>
+                            
+                            <button class="btn btn-sm btn-secondary" onclick="eventManager.duplicateEvent('${event.id}')" title="Duplicar">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            
+                            <button class="btn btn-sm btn-danger" onclick="eventManager.deleteEvent('${event.id}')" title="Excluir">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Calendar Methods
+            generateCalendar() {
+                const container = document.getElementById('calendarGrid');
+                const year = this.currentDate.getFullYear();
+                const month = this.currentDate.getMonth();
+                
+                // Update calendar title
+                document.getElementById('calendarTitle').textContent = 
+                    new Intl.DateTimeFormat('pt-BR', { month: 'long', year: 'numeric' })
+                        .format(this.currentDate);
+
+                // Generate calendar grid
+                const firstDay = new Date(year, month, 1);
+                const lastDay = new Date(year, month + 1, 0);
+                const startDate = new Date(firstDay);
+                startDate.setDate(startDate.getDate() - firstDay.getDay());
+
+                const days = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+                let html = '';
+
+                // Day headers
+                days.forEach(day => {
+                    html += `<div class="calendar-day-header">${day}</div>`;
+                });
+
+                // Calendar days
+                const currentDate = new Date(startDate);
+                for (let i = 0; i < 42; i++) {
+                    const isCurrentMonth = currentDate.getMonth() === month;
+                    const isToday = this.isSameDay(currentDate, new Date());
+                    const dayEvents = this.getEventsForDate(currentDate);
+
+                    html += `
+                        <div class="calendar-day ${!isCurrentMonth ? 'other-month' : ''} ${isToday ? 'today' : ''}" 
+                             data-date="${currentDate.toISOString().split('T')[0]}"
+                             onclick="eventManager.selectCalendarDate('${currentDate.toISOString().split('T')[0]}')">
+                            <div class="calendar-day-number">${currentDate.getDate()}</div>
+                            <div class="calendar-events">
+                                ${dayEvents.map(event => `
+                                    <div class="calendar-event priority-${event.priority}" title="${event.title}">
+                                        ${event.title}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+
+                    currentDate.setDate(currentDate.getDate() + 1);
+                }
+
+                container.innerHTML = html;
+            }
+
+            selectCalendarDate(dateString) {
+                this.openEventModal();
+                document.getElementById('eventDate').value = dateString;
+            }
+
+            previousMonth() {
+                this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+                this.generateCalendar();
+            }
+
+            nextMonth() {
+                this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+                this.generateCalendar();
+            }
+
+            goToToday() {
+                this.currentDate = new Date();
+                this.generateCalendar();
+            }
+
+            // Filter and Search Methods
+            getFilteredEvents() {
+                return this.events.filter(event => {
+                    // Search filter
+                    if (this.filters.search) {
+                        const searchTerm = this.filters.search.toLowerCase();
+                        const searchableText = `${event.title} ${event.description} ${event.location}`.toLowerCase();
+                        if (!searchableText.includes(searchTerm)) return false;
+                    }
+
+                    // Priority filter
+                    if (this.filters.priority && event.priority !== this.filters.priority) {
+                        return false;
+                    }
+
+                    // Category filter
+                    if (this.filters.category && event.category !== this.filters.category) {
+                        return false;
+                    }
+
+                    // Status filter
+                    if (this.filters.status) {
+                        if (this.filters.status === 'overdue' && !this.isEventOverdue(event)) {
+                            return false;
+                        } else if (this.filters.status !== 'overdue' && event.status !== this.filters.status) {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }).sort((a, b) => {
+                    // Sort by priority first, then by date
+                    const priorityOrder = { high: 3, medium: 2, low: 1 };
+                    if (priorityOrder[a.priority] !== priorityOrder[b.priority]) {
+                        return priorityOrder[b.priority] - priorityOrder[a.priority];
+                    }
+                    return new Date(a.date + ' ' + (a.time || '00:00')) - new Date(b.date + ' ' + (b.time || '00:00'));
+                });
+            }
+
+            applyFilters() {
+                this.renderEvents();
+            }
+
+            clearFilters() {
+                this.filters = { search: '', priority: '', category: '', status: '' };
+                document.getElementById('searchFilter').value = '';
+                document.getElementById('priorityFilter').value = '';
+                document.getElementById('categoryFilter').value = '';
+                document.getElementById('statusFilter').value = '';
+                this.renderEvents();
+            }
+
+            sortEvents() {
+                const sortBy = document.getElementById('sortBy').value;
+                this.events.sort((a, b) => {
+                    switch (sortBy) {
+                        case 'date':
+                            return new Date(a.date + ' ' + (a.time || '00:00')) - new Date(b.date + ' ' + (b.time || '00:00'));
+                        case 'priority':
+                            const priorityOrder = { high: 3, medium: 2, low: 1 };
+                            return priorityOrder[b.priority] - priorityOrder[a.priority];
+                        case 'title':
+                            return a.title.localeCompare(b.title);
+                        case 'category':
+                            return a.category.localeCompare(b.category);
+                        default:
+                            return 0;
+                    }
+                });
+                this.renderEvents();
+            }
+
+            // Modal Methods
+            openEventModal(eventId = null) {
+                this.editingEvent = eventId ? this.events.find(e => e.id === eventId) : null;
+                
+                if (this.editingEvent) {
+                    document.getElementById('modalTitle').textContent = 'Editar Evento';
+                    this.populateForm(this.editingEvent);
+                } else {
+                    document.getElementById('modalTitle').textContent = 'Novo Evento';
+                    this.resetForm();
+                }
+                
+                document.getElementById('eventModal').classList.add('active');
+            }
+
+            closeEventModal() {
+                document.getElementById('eventModal').classList.remove('active');
+                this.editingEvent = null;
+                this.resetForm();
+            }
+
+            editEvent(id) {
+                this.openEventModal(id);
+            }
+
+            populateForm(event) {
+                document.getElementById('eventTitle').value = event.title || '';
+                document.getElementById('eventDescription').value = event.description || '';
+                document.getElementById('eventDate').value = event.date || '';
+                document.getElementById('eventTime').value = event.time || '';
+                document.getElementById('eventPriority').value = event.priority || 'medium';
+                document.getElementById('eventCategory').value = event.category || 'task';
+                document.getElementById('eventWhatsApp').value = event.whatsapp || '';
+                document.getElementById('eventLocation').value = event.location || '';
+                document.getElementById('eventLink').value = event.link || '';
+                document.getElementById('eventPrivate').checked = event.private || false;
+            }
+
+            resetForm() {
+                document.getElementById('eventForm').reset();
+                document.getElementById('eventDate').value = new Date().toISOString().split('T')[0];
+            }
+
+            showConfirmation(message, callback) {
+                document.getElementById('confirmMessage').textContent = message;
+                document.getElementById('confirmAction').onclick = callback;
+                document.getElementById('confirmModal').classList.add('active');
+            }
+
+            closeConfirmModal() {
+                document.getElementById('confirmModal').classList.remove('active');
+            }
+
+            // Exportação de dados
+            exportData(format) {
+                switch (format) {
+                    case 'pdf':
+                        this.exportToPDF();
+                        break;
+                    case 'csv':
+                        this.exportToCSV();
+                        break;
+                    case 'json':
+                        this.exportToJSON();
+                        break;
+                }
+            }            exportToPDF() {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF('p', 'pt', 'a4');
+                const pageWidth = doc.internal.pageSize.getWidth();
+                const pageHeight = doc.internal.pageSize.getHeight();
+                const margin = 40;
+                let y = margin;
+
+                // Título do documento
+                doc.setFontSize(20);
+                doc.setFont('helvetica', 'bold');
+                doc.text('Agenda Premium - Lista de Eventos', pageWidth / 2, y, { align: 'center' });
+                y += 40;
+
+                this.events.forEach((event, index) => {
+                    // Verifica se precisa de nova página
+                    if (y > pageHeight - 100) {
+                        doc.addPage();
+                        y = margin;
+                    }
+
+                    // Título do evento
+                    doc.setFontSize(14);
+                    doc.setFont('helvetica', 'bold');
+                    const title = `${index + 1}. ${event.title}`;
+                    doc.text(title, margin, y);
+                    y += 25;
+
+                    // Informações do evento
+                    doc.setFontSize(12);
+                    doc.setFont('helvetica', 'normal');
+
+                    // Data e Hora
+                    doc.text(`Data: ${this.formatDate(event.date)}`, margin, y);
+                    if (event.time) {
+                        doc.text(`Hora: ${event.time}`, pageWidth - margin, y, { align: 'right' });
+                    }
+                    y += 20;
+
+                    // Prioridade e Categoria
+                    doc.text(`Prioridade: ${this.getPriorityText(event.priority)}`, margin, y);
+                    doc.text(`Categoria: ${this.getCategoryText(event.category)}`, pageWidth - margin, y, { align: 'right' });
+                    y += 20;                    // Descrição (com quebra de linha automática)
+                    if (event.description) {
+                        doc.setFontSize(12);
+                        doc.text('Descrição:', margin, y);
+                        y += 20;
+                        const splitDescription = doc.splitTextToSize(event.description, pageWidth - (margin * 2));
+                        doc.text(splitDescription, margin, y);
+                        y += (splitDescription.length * 15) + 10;
+                    }
+
+                    // Status
+                    doc.setFontSize(12);
+                    doc.text(`Status: ${this.getStatusText(event.status, this.isEventOverdue(event))}`, margin, y);
+                    y += 20;
+
+                    // Linha separadora
+                    doc.setDrawColor(200);
+                    doc.line(margin, y, pageWidth - margin, y);
+                    y += 30;
+                });
+
+                doc.save(`eventos_${new Date().toISOString().split('T')[0]}.pdf`);
+                this.showNotification('PDF exportado com sucesso!', 'success');
+            }
+
+            exportToCSV() {
+                const headers = ['Título', 'Data', 'Hora', 'Prioridade', 'Categoria', 'Descrição', 'Status'];
+                const rows = this.events.map(event => [
+                    event.title,
+                    this.formatDate(event.date),
+                    event.time || '',
+                    this.getPriorityText(event.priority),
+                    this.getCategoryText(event.category),
+                    event.description || '',
+                    this.getStatusText(event.status, this.isEventOverdue(event))
+                ]);
+
+                const csvContent = [
+                    headers.join(','),
+                    ...rows.map(row => row.join(','))
+                ].join('\n');
+
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `eventos-${new Date().toISOString().split('T')[0]}.csv`;
+                a.click();
+                URL.revokeObjectURL(url);
+                this.showNotification('CSV exportado com sucesso!', 'success');
+            }
+
+            exportToJSON() {
+                const data = JSON.stringify(this.events, null, 2);
+                const blob = new Blob([data], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `eventos-${new Date().toISOString().split('T')[0]}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+                this.showNotification('JSON exportado com sucesso!', 'success');
+            }
+
+            toggleTheme() {
+                const body = document.documentElement;
+                const isDark = body.getAttribute('data-theme') === 'dark';
+                body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+                localStorage.setItem('theme', isDark ? 'light' : 'dark');
+                
+                // Atualiza o ícone
+                const themeIcon = document.querySelector('.theme-toggle i');
+                themeIcon.className = `fas ${isDark ? 'fa-moon' : 'fa-sun'}`;
+            }
+
+            // Utility Methods
+            generateId() {
+                return Date.now().toString(36) + Math.random().toString(36).substr(2);
+            }
+
+            formatDate(dateString) {
+                return new Date(dateString + 'T00:00:00').toLocaleDateString('pt-BR');
+            }
+
+            isSameDay(date1, date2) {
+                return date1.toDateString() === date2.toDateString();
+            }
+
+            getEventsForDate(date) {
+                const dateString = date.toISOString().split('T')[0];
+                return this.events.filter(event => event.date === dateString);
+            }
+
+            isEventOverdue(event) {
+                if (event.status === 'completed') return false;
+                const eventDateTime = new Date(event.date + 'T' + (event.time || '23:59'));
+                const now = new Date();
+                return eventDateTime < now;
+            }
+
+            isEventDueSoon(event) {
+                if (event.status === 'completed') return false;
+                const eventDateTime = new Date(event.date + 'T' + (event.time || '23:59'));
+                const now = new Date();
+                const twoDaysFromNow = new Date(now.getTime() + (2 * 24 * 60 * 60 * 1000));
+                return eventDateTime > now && eventDateTime <= twoDaysFromNow;
+            }
+
+            getPriorityText(priority) {
+                const texts = { high: 'Alta', medium: 'Média', low: 'Baixa' };
+                return texts[priority] || priority;
+            }
+
+            getCategoryText(category) {
+                const texts = { 
+                    meeting: 'Reunião', 
+                    delivery: 'Entrega', 
+                    task: 'Tarefa', 
+                    reminder: 'Lembrete' 
+                };
+                return texts[category] || category;
+            }
+
+            getStatusText(status, isOverdue) {
+                if (status === 'completed') return 'Concluído';
+                if (isOverdue) return 'Atrasado';
+                return 'Pendente';
+            }
+
+            // Stats and Analytics
+            updateStats() {
+                const total = this.events.length;
+                const dueSoon = this.events.filter(e => this.isEventDueSoon(e)).length;
+                const pending = this.events.filter(e => e.status === 'pending' && !this.isEventDueSoon(e) && !this.isEventOverdue(e)).length;
+                const completed = this.events.filter(e => e.status === 'completed').length;
+                const overdue = this.events.filter(e => this.isEventOverdue(e)).length;
+
+                document.getElementById('totalEvents').textContent = total;
+                document.getElementById('dueEvents').textContent = dueSoon;
+                document.getElementById('pendingEvents').textContent = pending;
+                document.getElementById('completedEvents').textContent = completed;
+                document.getElementById('overdueEvents').textContent = overdue;
+            }
+
+            checkOverdueEvents() {
+                const overdueEvents = this.events.filter(e => this.isEventOverdue(e));
+                if (overdueEvents.length > 0) {
+                    this.showNotification(
+                        `Você tem ${overdueEvents.length} evento(s) em atraso!`,
+                        'warning'
+                    );
+                }
+            }
+
+            checkNotifications() {
+                const now = new Date();
+                const upcoming = this.events.filter(event => {
+                    if (event.status === 'completed') return false;
+                    const eventDateTime = new Date(event.date + 'T' + (event.time || '09:00'));
+                    const diffMinutes = (eventDateTime - now) / (1000 * 60);
+                    return diffMinutes > 0 && diffMinutes <= 15; // 15 minutes before
+                });
+
+                upcoming.forEach(event => {
+                    this.showNotification(
+                        `Lembrete: "${event.title}" em breve!`,
+                        'info'
+                    );
+                });
+            }
+
+            // Storage Methods
+            saveToStorage() {
+                localStorage.setItem('events', JSON.stringify(this.events));
+            }
+
+            loadGlobalWhatsApp() {
+                const saved = localStorage.getItem('globalWhatsApp');
+                if (saved) {
+                    document.getElementById('globalWhatsApp').value = saved;
+                }
+            }
+
+            saveGlobalWhatsApp() {
+                const value = document.getElementById('globalWhatsApp').value;
+                localStorage.setItem('globalWhatsApp', value);
+            }
+
+            loadQuickNotes() {
+                const saved = localStorage.getItem('quickNotes');
+                if (saved) {
+                    document.getElementById('quickNotes').value = saved;
+                }
+            }
+
+            saveQuickNotes() {
+                const value = document.getElementById('quickNotes').value;
+                localStorage.setItem('quickNotes', value);
+                this.showNotification('Anotações salvas com sucesso!', 'success');
+            }
+
+            showNotification(message, type = 'info') {
+                const container = document.getElementById('notificationContainer');
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas ${this.getNotificationIcon(type)}"></i>
+                        <span>${message}</span>
+                    </div>
+                `;
+                
+                container.appendChild(notification);
+                notification.classList.add('show');
+
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => notification.remove(), 300);
+                }, 3000);
+            }
+
+            getNotificationIcon(type) {
+                const icons = {
+                    success: 'fa-check-circle',
+                    error: 'fa-times-circle',
+                    warning: 'fa-exclamation-circle',
+                    info: 'fa-info-circle'
+                };
+                return icons[type] || icons.info;
+            }
+
+            switchView(view) {
+                this.currentView = view;
+                
+                // Atualiza os botões de visualização
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.view === view);
+                });
+
+                // Atualiza a visualização
+                document.getElementById('listView').style.display = view === 'list' ? 'block' : 'none';
+                document.getElementById('calendarView').style.display = view === 'calendar' ? 'block' : 'none';
+
+                if (view === 'calendar') {
+                    this.generateCalendar();
+                }
+            }
+        }
+
+        // Initialize the Event Manager
+        const eventManager = new EventManager();
+
+        // Global event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Save quick notes on blur
+            document.getElementById('quickNotes').addEventListener('blur', () => {
+                eventManager.saveQuickNotes();
+            });
+        });
+    </script>
+</body>
+</html>

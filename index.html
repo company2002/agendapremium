@@ -1013,6 +1013,10 @@
                 position: static;
                 order: 2;
             }
+
+            .events-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
         }
 
         @media (max-width: 768px) {
@@ -1048,6 +1052,164 @@
             
             .calendar-day {
                 min-height: 80px;
+            }
+
+            .event-card {
+                padding: 1rem;
+            }
+
+            .event-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .event-actions {
+                flex-wrap: wrap;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .upcoming-alert {
+                left: 10px;
+                right: 10px;
+                width: auto;
+                max-width: none;
+                transform: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                background: var(--surface);
+                overflow-x: hidden;
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .container {
+                padding: 0;
+            }
+
+            .header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                background: var(--surface);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border-bottom: 1px solid var(--border);
+                padding: 0.5rem 1rem;
+            }
+
+            .header-content {
+                padding: 0;
+            }
+
+            .logo {
+                font-size: 1.25rem;
+            }
+
+            .main-layout {
+                padding-top: 60px;
+                padding-bottom: 70px;
+            }
+
+            .event-card {
+                margin: 0.5rem;
+                border-radius: 12px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                border: 1px solid var(--border);
+            }
+
+            .events-container {
+                border-radius: 0;
+                box-shadow: none;
+            }
+
+            .modal-content {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                margin: 0;
+                width: 100%;
+                max-width: 100%;
+                border-radius: 20px 20px 0 0;
+                padding: 1.5rem;
+            }
+
+            /* Bottom Navigation Bar */
+            .bottom-nav {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: var(--surface);
+                border-top: 1px solid var(--border);
+                display: flex;
+                justify-content: space-around;
+                padding: 0.75rem;
+                z-index: 1000;
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+
+            .bottom-nav-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                color: var(--text-secondary);
+                font-size: 0.75rem;
+                gap: 0.25rem;
+            }
+
+            .bottom-nav-item i {
+                font-size: 1.25rem;
+            }
+
+            .bottom-nav-item.active {
+                color: var(--primary);
+            }
+
+            /* Active Content Area */
+            .content-area {
+                height: calc(100vh - 130px);
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* Touch-friendly buttons */
+            .btn {
+                min-height: 44px;
+                padding: 0.75rem 1rem;
+            }
+
+            /* Glass effect for modals */
+            .modal::before {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.3);
+                backdrop-filter: blur(4px);
+                -webkit-backdrop-filter: blur(4px);
+            }
+
+            /* Upcoming Alert */
+            .upcoming-alert {
+                bottom: 80px;
+                left: 20px;
+                right: 20px;
+                border-radius: 12px;
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+                background: rgba(255, 0, 0, 0.9);
+                box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
             }
         }
 
@@ -2216,6 +2378,7 @@ function addChatMessage(message, type) {
                 // Day headers
                 days.forEach(day => {
                     html += `<div class="calendar-day-header">${day}</div>`;
+
                 });
 
                 // Calendar days
